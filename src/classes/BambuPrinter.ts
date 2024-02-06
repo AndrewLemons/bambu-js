@@ -3,7 +3,6 @@ import path from "node:path";
 import BambuFTP from "./BambuFTP";
 import BambuMQTT from "./BambuMQTT";
 import BambuState from "../interfaces/BambuState";
-import PrintProjectFileOptions from "../interfaces/PrintProjectFileOptions";
 
 /**
  * A class for interfacing with a Bambu Lab printer.
@@ -42,6 +41,60 @@ export default class BambuPrinter extends EventEmitter {
 	 */
 	async manipulateFiles(callback: (context: BambuFTP) => Promise<void>) {
 		await BambuFTP.createContext(this.host, this.accessCode, callback);
+	}
+
+	/**
+	 * Pause the current print job.
+	 */
+	pause() {
+		let data = {
+			print: {
+				sequence_id: "0",
+				command: "pause",
+				param: "",
+			},
+		};
+
+		this.mqtt.sendRequest(data);
+	}
+
+	/**
+	 * Resume the current print job.
+	 */
+	resume() {
+		let data = {
+			print: {
+				sequence_id: "0",
+				command: "resume",
+				param: "",
+			},
+		};
+
+		this.mqtt.sendRequest(data);
+	}
+
+	/**
+	 * Set the state of the printer's LED.
+	 * @param options - Options for setting the LED state.
+	 */
+	setLed(options: SetLedOptions) {
+		let data: any = {
+			system: {
+				sequence_id: "0",
+				command: "ledctrl",
+				led_node: "chamber_light",
+				led_mode: options.mode,
+			},
+		};
+
+		if (options.mode === "flashing") {
+			data.system.led_on_time = options.onTime;
+			data.system.led_off_time = options.offTime;
+			data.system.loop_times = options.loopTimes;
+			data.system.interval_time = options.intervalTime;
+		}
+
+		this.mqtt.sendRequest(data);
 	}
 
 	/**
@@ -98,4 +151,21 @@ export default class BambuPrinter extends EventEmitter {
 		this.state = { ...this.state, ...state };
 		this.emit("update", this.state);
 	}
+}
+
+interface SetLedOptions {
+	mode: "on" | "off" | "flashing";
+	onTime?: number;
+	offTime?: number;
+	loopTimes?: number;
+	intervalTime?: number;
+}
+
+interface PrintProjectFileOptions {
+	flowCalibration?: boolean;
+	layerInspect?: boolean;
+	timelaspe?: boolean;
+	vibrationCalibration?: boolean;
+	bedLeveling?: boolean;
+	bedType?: string;
 }
