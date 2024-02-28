@@ -117,8 +117,8 @@ export default class BambuPrinter extends EventEmitter {
 			print: {
 				command: "project_file",
 				// File info
-				param: path.resolve("Metadata/", file),
-				url: "file://" + path.resolve("/sdcard/", projectPath),
+				param: path.join("Metadata/", file),
+				url: "file://" + path.join("/sdcard/", projectPath),
 				subtask_name: name,
 				md5: hash,
 				// Options

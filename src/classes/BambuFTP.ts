@@ -1,5 +1,7 @@
 import fs from "node:fs";
+import path from "node:path";
 import * as ftp from "basic-ftp";
+import { PrinterDirectoryUnavailable } from "../utilities/errors";
 
 const TIMEOUT = 15000;
 const USERNAME = "bblp";
@@ -25,7 +27,14 @@ export default class BambuFTP {
 		await this.client.ensureDir(path);
 
 		// Get print jobs
-		const printJobs = await this.client.list(path);
+		const printJobs = await this.client.list(path).catch((error) => {
+			switch (error.code) {
+				case 550:
+					throw new PrinterDirectoryUnavailable(path);
+				default:
+					throw error;
+			}
+		});
 		return printJobs.map((printJob) => printJob.name);
 	}
 
@@ -40,8 +49,17 @@ export default class BambuFTP {
 		destinationPath: string,
 		progressCallback?: (progress: number) => void,
 	) {
+		const destinationDir = path.dirname(destinationPath);
+
 		// Create directory if it doesn't exist
-		await this.client.ensureDir(destinationPath);
+		await this.client.ensureDir(destinationDir).catch((error) => {
+			switch (error.code) {
+				case 550:
+					throw new PrinterDirectoryUnavailable(destinationDir);
+				default:
+					throw error;
+			}
+		});
 
 		// Find the size of the file
 		const stats = fs.statSync(sourcePath);
@@ -49,13 +67,20 @@ export default class BambuFTP {
 
 		// Add progress callback
 		if (progressCallback) {
-			this.client.trackProgress((info) =>
-				progressCallback(info.bytes / fileSize),
-			);
+			this.client.trackProgress((info) => {
+				progressCallback(info.bytes / fileSize);
+			});
 		}
 
 		// Send print job
-		await this.client.uploadFrom(sourcePath, destinationPath);
+		await this.client.uploadFrom(sourcePath, destinationPath).catch((error) => {
+			switch (error.code) {
+				case 550:
+					throw new PrinterDirectoryUnavailable(destinationPath);
+				default:
+					throw error;
+			}
+		});
 
 		// Disconnect progress tracking
 		this.client.trackProgress();
@@ -109,7 +134,6 @@ export default class BambuFTP {
 	) {
 		const context = new BambuFTP(host, accessCode);
 		await context.connect();
-		await callback(context);
-		await context.disconnect();
+		await callback(context).finally(() => context.disconnect());
 	}
 }
