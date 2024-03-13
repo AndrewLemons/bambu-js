@@ -7,6 +7,8 @@ import BambuState from "../interfaces/BambuState";
 /**
  * A class for interfacing with a Bambu Lab printer.
  * @emits update - Emitted when the printer's state is updated.
+ * @emits connect - Emitted when the printer is connected.
+ * @emits disconnect - Emitted when the printer is disconnected.
  */
 export default class BambuPrinter extends EventEmitter {
 	host: string;
@@ -33,6 +35,15 @@ export default class BambuPrinter extends EventEmitter {
 	async connect() {
 		await this.mqtt.connect();
 		this.mqtt.on("update", this.onStateUpdate.bind(this));
+		this.mqtt.on("disconnect", () => this.emit("disconnect"));
+		this.mqtt.on("connect", () => this.emit("connect"));
+	}
+
+	/**
+	 * Disconnect from the printer.
+	 */
+	async disconnect() {
+		await this.mqtt.disconnect();
 	}
 
 	/**
@@ -66,6 +77,21 @@ export default class BambuPrinter extends EventEmitter {
 			print: {
 				sequence_id: "0",
 				command: "resume",
+				param: "",
+			},
+		};
+
+		this.mqtt.sendRequest(data);
+	}
+
+	/**
+	 * Stop the current print job.
+	 */
+	stop() {
+		let data = {
+			print: {
+				sequence_id: "0",
+				command: "stop",
 				param: "",
 			},
 		};

@@ -96,6 +96,11 @@ export const errorCodes = {
 	"0700210000020004": "AMS slot 2 filament may be broken in the toolhead.",
 	"0700220000020004": "AMS slot 3 filament may be broken in the toolhead.",
 	"0700230000020004": "AMS slot 4 filament may be broken in the toolhead.",
+	// Overload
+	"0700600000020001": "AMS slot 1 is overloaded. The filament may be tangled or the spool may be stuck.",
+	"0700610000020001": "AMS slot 2 is overloaded. The filament may be tangled or the spool may be stuck.",
+	"0700620000020001": "AMS slot 3 is overloaded. The filament may be tangled or the spool may be stuck.",
+	"0700630000020001": "AMS slot 4 is overloaded. The filament may be tangled or the spool may be stuck.",
 	// Generic
 	"0700010000010001": "The AMS assist motor has slipped.The extrusion wheel may be worn down,or the filament may be too thin.",
 	"0700010000010003": "The AMS assist motor torque control is malfunctioning.The current sensor may be faulty.",
@@ -115,7 +120,6 @@ export const errorCodes = {
 	"0700450000020002": "The filament cutter's cutting distance is too large.The XY motor may lose steps.",
 	"0700450000020003": "The filament cutter handle has not released.The handle or blade ay be stuck.",
 	"0700510000030001": "The AMS is disabled; please load filament from spool holder.",
-	"0700600000020001": "The AMS1 slot1 is overloaded. The filament may be tangled or the spool may be stuck.",
 	/*
 		Other
 	*/

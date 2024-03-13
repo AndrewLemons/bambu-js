@@ -6,6 +6,8 @@ const MQTT_USERNAME = "bblp";
 /**
  * A class for interfacing with a Bambu Lab printers over MQTT.
  * @emits update - Emitted when the printer's state is updated.
+ * @emits connect - Emitted when the printer is connected.
+ * @emits disconnect - Emitted when the printer is disconnected.
  */
 export default class BambuMQTT extends EventEmitter {
 	host: string;
@@ -46,6 +48,14 @@ export default class BambuMQTT extends EventEmitter {
 	}
 
 	/**
+	 * Disconnect from the printer.
+	 */
+	async disconnect() {
+		this.client.removeAllListeners();
+		this.client.end();
+	}
+
+	/**
 	 * Send a request to the device.
 	 * @param payload - The payload to send to the device.
 	 */
@@ -65,13 +75,15 @@ export default class BambuMQTT extends EventEmitter {
 
 		// Request the printer's complete state
 		this.sendRequest({ pushing: { sequence_id: "0", command: "pushall" } });
+
+		this.emit("connect");
 	}
 
 	/**
 	 * Handle the disconnect event.
 	 */
 	private onDisconnect() {
-		return;
+		this.emit("disconnect");
 	}
 
 	/**
