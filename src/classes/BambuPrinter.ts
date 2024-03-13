@@ -33,6 +33,15 @@ export default class BambuPrinter extends EventEmitter {
 	async connect() {
 		await this.mqtt.connect();
 		this.mqtt.on("update", this.onStateUpdate.bind(this));
+		this.emit("disconnect");
+	}
+
+	/**
+	 * Disconnect from the printer.
+	 */
+	async disconnect() {
+		await this.mqtt.disconnect();
+		this.emit("connect");
 	}
 
 	/**
