@@ -83,6 +83,21 @@ export default class BambuPrinter extends EventEmitter {
 	}
 
 	/**
+	 * Stop the current print job.
+	 */
+	stop() {
+		let data = {
+			print: {
+				sequence_id: "0",
+				command: "stop",
+				param: "",
+			},
+		};
+
+		this.mqtt.sendRequest(data);
+	}
+
+	/**
 	 * Set the state of the printer's LED.
 	 * @param options - Options for setting the LED state.
 	 */
