@@ -40,10 +40,11 @@ export default class BambuMQTT extends EventEmitter {
 			clientId: MQTT_USERNAME,
 			protocol: "mqtts",
 			rejectUnauthorized: false,
+			reconnectPeriod: 5000,
 		});
 
 		this.client.on("connect", this.onConnect.bind(this));
-		this.client.on("disconnect", this.onDisconnect.bind(this));
+		this.client.on("close", this.onClose.bind(this));
 		this.client.on("message", this.onMessage.bind(this));
 	}
 
@@ -80,9 +81,9 @@ export default class BambuMQTT extends EventEmitter {
 	}
 
 	/**
-	 * Handle the disconnect event.
+	 * Handle the close event.
 	 */
-	private onDisconnect() {
+	private onClose() {
 		this.emit("disconnect");
 	}
 
@@ -109,5 +110,12 @@ export default class BambuMQTT extends EventEmitter {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Get the current connection status.
+	 */
+	get isConnected() {
+		return this.client.connected;
 	}
 }

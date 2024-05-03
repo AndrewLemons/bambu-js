@@ -169,6 +169,13 @@ export default class BambuPrinter extends EventEmitter {
 	}
 
 	/**
+	 * Get the current connection status.
+	 */
+	get isConnected() {
+		return this.mqtt.isConnected;
+	}
+
+	/**
 	 * Handle the state update event.
 	 * @param state - The new state of the printer.
 	 */
