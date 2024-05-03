@@ -22,7 +22,7 @@ export function getErrorMessage(code: string) {
 /* prettier-ignore */
 export const errorCodes = {
 	/*
-		Bed
+		Machine
 	*/
 	// Force sensor continuous force
 	"03000A0000010005": "Force sensor 1 detected unexpected continuous force.",
@@ -32,25 +32,58 @@ export const errorCodes = {
 	"03000A0000010004": "Force sensor 1 detected an external disturbance while testing.",
 	"03000B0000010004": "Force sensor 2 detected an external disturbance while testing.",
 	"03000C0000010004": "Force sensor 3 detected an external disturbance while testing.",
-	// Generic
+	// Resonance
 	"0300100000020001": "The 1st order mechanical resonance mode of X axis is low.",
-	"0300100000020002": "The 1st order mechanical resonance mode of X axis differ much from last calibration , please re-run the machine calibration later.",
+	"0300110000020001": "The 1st order mechanical resonance mode of Y axis is low.",
+	"0300100000020002": "The 1st order mechanical resonance mode of X axis differs much from last calibration, please re-run the machine calibration later.",
+	"0300110000020002": "The 1st order mechanical resonance mode of Y axis differs much from last calibration, please re-run the machine calibration later.",
 	"03000F0000010001": "The accelerometer data is unavailable.",
 	"03000D000001000B": "The Z axis motor seems got stuck when moving up.",
-	"03000D0000010003": "The build plate is not placed properly.",
+	// Build plate placement
 	"03000D0000020001": "Heatbed homing abnormal.",
-	"03000A0000010003": "The sensititvity of heatbed force sensor 1/2/3 is too low.",
-	"03000A0000010002": "The sensititvity of heatbed force sensor 1/2/3 is low.",
-	"03000A0000010001": "The sensititvity of heatbed force sensor 1/2/3 is too high.",
-	"0300020000010009": "The nozzle temperature control is abnormal. The hot end may not be installed.",
-	"0300030000020002": "The speed of hotend fan is slow.",
-	"0300030000010001": "The speed of the hotend fan is too slow or stopped",
-	"0300040000020001": "The speed of part cooling fan if too slow or stopped.",
-	"0300060000010001": "Motor-A has an open-circuit. There may be a loose connection, or the motor may have failed.",
-	"0300060000010002": "Motor-A has a short-circuit. It may have failed.",
-	"0300060000010003": "The resistance of Motor-A is abnormal, the motor may have failed.",
+	"03000D0000010003": "The build plate is not placed properly.",
+	"03000D0000010004": "The build plate is not placed properly.",
+	"03000D0000010005": "The build plate is not placed properly.",
+	"03000D0000010006": "The build plate is not placed properly.",
+	"03000D0000010007": "The build plate is not placed properly.",
+	"03000D0000010008": "The build plate is not placed properly.",
+	"03000D0000010009": "The build plate is not placed properly.",
+	"03000D000001000A": "The build plate is not placed properly.",
+	"03000D0000020003": "The build plate is not placed properly.",
+	"03000D0000020004": "The build plate is not placed properly.",
+	"03000D0000020005": "The build plate is not placed properly.",
+	"03000D0000020006": "The build plate is not placed properly.",
+	"03000D0000020007": "The build plate is not placed properly.",
+	"03000D0000020008": "The build plate is not placed properly.",
+	"03000D0000020009": "The build plate is not placed properly.",
+	"03000D000002000A": "The build plate is not placed properly.",
+	// Force sensor sensitivity
+	"03000A0000010003": "The sensitivity of heatbed force sensor 1 is too low.",
+	"03000B0000010003": "The sensitivity of heatbed force sensor 2 is too low.",
+	"03000C0000010003": "The sensitivity of heatbed force sensor 3 is too low.",
+	"03000A0000010002": "The sensitivity of heatbed force sensor 1 is low.",
+	"03000B0000010002": "The sensitivity of heatbed force sensor 2 is low.",
+	"03000C0000010002": "The sensitivity of heatbed force sensor 3 is low.",
+	"03000A0000010001": "The sensitivity of heatbed force sensor 1 is too high.",
+	"03000B0000010001": "The sensitivity of heatbed force sensor 2 is too high.",
+	"03000C0000010001": "The sensitivity of heatbed force sensor 3 is too high.",
+	// Motor open circuit
+	"0300060000010001": "Motor A has an open-circuit. There may be a loose connection, or the motor may have failed.",
+	"0300070000010001": "Motor B has an open-circuit. There may be a loose connection, or the motor may have failed.",
+	"0300080000010001": "Motor C has an open-circuit. There may be a loose connection, or the motor may have failed.",
+	// Motor short circuit
+	"0300060000010002": "Motor A has a short-circuit. It may have failed.",
+	"0300070000010002": "Motor B has a short-circuit. It may have failed.",
+	"0300080000010002": "Motor C has a short-circuit. It may have failed.",
+	// Motor resistance
+	"0300060000010003": "The resistance of Motor A is abnormal, the motor may have failed.",
+	"0300070000010003": "The resistance of Motor B is abnormal, the motor may have failed.",
+	"0300080000010003": "The resistance of Motor C is abnormal, the motor may have failed.",
+	// Motor current
+	"0300130000010001": "The current sensor of Motor A is abnormal. This may be caused by a failure of the hardware sampling circuit.",
+	"0300140000010001": "The current sensor of Motor B is abnormal. This may be caused by a failure of the hardware sampling circuit.",
+	"0300150000010001": "The current sensor of Motor C is abnormal. This may be caused by a failure of the hardware sampling circuit.",
 	"0300010000010007": "The heatbed temperature is abnormal; the sensor may have an open circuit.",
-	"0300130000010001": "The current sensor of Motor-A is abnormal. This may be caused by a failure of the hardware sampling circuit.",
 	"0300180000010005": "The Z axis motor seems got stuck during movement, please check if there is any foreign matter on the Z sliders or Z timing belt wheels.",
 	"0300190000010001": "The eddy current sensor on Y-axis is not available, the wire should be broken.",
 	"0300190000020002": "The sensitivity of Y-axis eddy current sensor is too low.",
@@ -68,6 +101,10 @@ export const errorCodes = {
 	"0300180000010004": "The data from extrusion force sensor is abnormal, the sensor should be broken.",
 	"03001A0000020001": "The nozzle is wrapped in the filament or the build plate is placed incorrectly",
 	"03001A0000020002": "The extrusion force sensor detects that the nozzle is clogged",
+	"0300020000010009": "The nozzle temperature control is abnormal. The hot end may not be installed.",
+	"0300030000020002": "The speed of hotend fan is slow.",
+	"0300030000010001": "The speed of the hotend fan is too slow or stopped",
+	"0300040000020001": "The speed of part cooling fan if too slow or stopped.",
 	/*
 		AMS
 	*/
@@ -101,27 +138,39 @@ export const errorCodes = {
 	"0700610000020001": "AMS slot 2 is overloaded. The filament may be tangled or the spool may be stuck.",
 	"0700620000020001": "AMS slot 3 is overloaded. The filament may be tangled or the spool may be stuck.",
 	"0700630000020001": "AMS slot 4 is overloaded. The filament may be tangled or the spool may be stuck.",
+	// Filament run out and bad purge
+	"0700200000020005": "AMS slot 1 filament has run out, and purging the old filament went abnormally; please check whether the filament is stuck in the tool head.",
+	"0700210000020005": "AMS slot 2 filament has run out, and purging the old filament went abnormally; please check whether the filament is stuck in the tool head.",
+	"0700220000020005": "AMS slot 3 filament has run out, and purging the old filament went abnormally; please check whether the filament is stuck in the tool head.",
+	"0700230000020005": "AMS slot 4 filament has run out, and purging the old filament went abnormally; please check whether the filament is stuck in the tool head.",
+	// Filament run out and waiting for purge
+	"0700200000030001": "AMS slot 1 filament has run out. Please wait while old filament is purged.",
+	"0700210000030001": "AMS slot 2 filament has run out. Please wait while old filament is purged.",
+	"0700220000030001": "AMS slot 3 filament has run out. Please wait while old filament is purged.",
+	"0700230000030001": "AMS slot 4 filament has run out. Please wait while old filament is purged.",
+	// Filament run out and auto switch
+	"0700200000030002": "AMS slot 1 filament has run out and automatically switched to the slot with the same filament.",
+	"0700210000030002": "AMS slot 2 filament has run out and automatically switched to the slot with the same filament.",
+	"0700220000030002": "AMS slot 3 filament has run out and automatically switched to the slot with the same filament.",
+	"0700230000030002": "AMS slot 4 filament has run out and automatically switched to the slot with the same filament.",
 	// Generic
-	"0700010000010001": "The AMS assist motor has slipped.The extrusion wheel may be worn down,or the filament may be too thin.",
-	"0700010000010003": "The AMS assist motor torque control is malfunctioning.The current sensor may be faulty.",
-	"0700010000010004": "The AMS assist motor speed control is malfunctioning.The speed sensor may be faulty.",
+	"0700010000010001": "The AMS assist motor has slipped. The extrusion wheel may be worn down,or the filament may be too thin.",
+	"0700010000010003": "The AMS assist motor torque control is malfunctioning. The current sensor may be faulty.",
+	"0700010000010004": "The AMS assist motor speed control is malfunctioning. The speed sensor may be faulty.",
 	"0700020000010001": "AMS filament speed and length error.The filament odometry may be faulty.",
-	"0700100000010001": "The AMS slot1 motor has slipped.The",
-	"0700100000010003": "The AMS slot1 motor torque control is malfunctioning.The current sensor may be faulty.",
-	"0700100000020002": "The AMS slot1 motor is overloaded.The filament may be tangled or stuck.",
-	"0700200000020005": "AMS1 Slot1 filament has run out, and purging the old filament went abnormally; please check whether the filament is stuck in the tool head.",
-	"0700200000030001": "AMS1 Slot1 filament has run out. Please wait while old filament is purged.",
-	"0700200000030002": "AMS1 Slot1 filament has run out and automatically switched to the slot with the same filament.",
+	"0700100000010001": "The AMS slot 1 motor has slipped.",
+	"0700100000010003": "The AMS slot 1 motor torque control is malfunctioning. The current sensor may be faulty.",
+	"0700100000020002": "The AMS slot 1 motor is overloaded. The filament may be tangled or stuck.",
 	"0700400000020001": "The filament buffer signal lost,the cable or position sensor may be malfunctioning.",
 	"0700400000020002": "The filament buffer position signal error,the position sensor may be malfunctioning.",
-	"0700400000020003": "The AMS Hub communication is abnormal,the cable may be not well connected.",
-	"0700400000020004": "The filament buffer signal is abnormal,the spring may be stuck or the filament may be tangle.",
-	"0700450000020001": "The filament cutter sensor is malfunctioning.The sensor may be disconected or damaged.",
-	"0700450000020002": "The filament cutter's cutting distance is too large.The XY motor may lose steps.",
-	"0700450000020003": "The filament cutter handle has not released.The handle or blade ay be stuck.",
+	"0700400000020003": "The AMS Hub communication is abnormal, the cable may be not well connected.",
+	"0700400000020004": "The filament buffer signal is abnormal, the spring may be stuck or the filament may be tangle.",
+	"0700450000020001": "The filament cutter sensor is malfunctioning. The sensor may be disconected or damaged.",
+	"0700450000020002": "The filament cutter's cutting distance is too large. The XY motor may lose steps.",
+	"0700450000020003": "The filament cutter handle has not released. The handle or blade ay be stuck.",
 	"0700510000030001": "The AMS is disabled; please load filament from spool holder.",
 	/*
-		Other
+		Micro Lidar & AI
 	*/
 	"0C00010000010001": "Micro Lidar camera is offline.",
 	"0C00010000020002": "Micro Lidar camera is malfunctioning.",
@@ -150,6 +199,9 @@ export const errorCodes = {
 	"0C00030000010009": "First layer inspection module rebooted.",
 	"0C0003000003000B": "Inspecting first layer.",
 	"0C0003000002000C": "Build plate marker not detected.",
+	/*
+		Software
+	*/
 	"0500010000020001": "The media pipeline is malfunctioning.",
 	"0500010000020002": "USB camera is not connected.",
 	"0500010000020003": "USB camera is malfunctioning.",
@@ -172,6 +224,9 @@ export const errorCodes = {
 	"0500040000010004": "The print file is unauthorized.",
 	"0500040000010006": "Failed to resume previous print.",
 	"0500040000020007": "The bed temperature exceeds the filament's vitrification temperature, which may cause a nozzle clog.",
+	/*
+		Other
+	*/
 	"1200100000020002": "The AMS1 Slot1 motor is overloaded. The filament may be tangled or stuck.",
 	"1200800000020001": "AMS1 Slot1 filament may be tangled or stuck.",
 	"07FF200000020001": "External filament has run out; please load a new filament.",
