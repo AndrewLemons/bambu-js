@@ -46,6 +46,9 @@ export default class BambuMQTT extends EventEmitter {
 		this.client.on("connect", this.onConnect.bind(this));
 		this.client.on("close", this.onClose.bind(this));
 		this.client.on("message", this.onMessage.bind(this));
+		this.client.on("error", (error) => {
+			this.disconnect();
+		});
 	}
 
 	/**
@@ -54,6 +57,7 @@ export default class BambuMQTT extends EventEmitter {
 	async disconnect() {
 		this.client.removeAllListeners();
 		this.client.end();
+		this.onDisconnect();
 	}
 
 	/**

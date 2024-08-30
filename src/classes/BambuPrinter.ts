@@ -2,7 +2,9 @@ import EventEmitter from "node:events";
 import path from "node:path";
 import BambuFTP from "./BambuFTP";
 import BambuMQTT from "./BambuMQTT";
-import BambuState from "../interfaces/BambuState";
+import convertState from "../utilities/stateConverter";
+import type { RawPrinterState } from "../types/RawPrinterState";
+import type { PrinterState } from "../types/PrinterState";
 
 /**
  * A class for interfacing with a Bambu Lab printer.
@@ -10,11 +12,11 @@ import BambuState from "../interfaces/BambuState";
  * @emits connect - Emitted when the printer is connected.
  * @emits disconnect - Emitted when the printer is disconnected.
  */
-export default class BambuPrinter extends EventEmitter {
+class BambuPrinter extends EventEmitter {
 	host: string;
 	serial: string;
 	accessCode: string;
-	state: BambuState;
+	state: RawPrinterState;
 
 	mqtt: BambuMQTT;
 
@@ -24,7 +26,9 @@ export default class BambuPrinter extends EventEmitter {
 		this.host = host;
 		this.serial = serial;
 		this.accessCode = accessCode;
-		this.state = {};
+		this.state = {
+			timestamp: Date.now(),
+		};
 
 		this.mqtt = new BambuMQTT(host, accessCode, serial);
 	}
@@ -52,6 +56,21 @@ export default class BambuPrinter extends EventEmitter {
 	 */
 	async manipulateFiles(callback: (context: BambuFTP) => Promise<void>) {
 		await BambuFTP.createContext(this.host, this.accessCode, callback);
+	}
+
+	/**
+	 * Get the raw state of the printer.
+	 * @returns The raw state of the printer.
+	 */
+	getRawState(): RawPrinterState {
+		return this.state;
+	}
+
+	/**
+	 * Get the state of the printer.
+	 */
+	getState(): PrinterState {
+		return convertState(this.state);
 	}
 
 	/**
@@ -179,12 +198,20 @@ export default class BambuPrinter extends EventEmitter {
 	 * Handle the state update event.
 	 * @param state - The new state of the printer.
 	 */
-	private async onStateUpdate(state: BambuState) {
+	private async onStateUpdate(state: RawPrinterState) {
 		// Merge the new state with the old state
-		this.state = { ...this.state, ...state };
-		this.emit("update", this.state);
+		this.state = { ...this.state, ...state, timestamp: Date.now() };
+		this.emit("update", this.getState());
 	}
 }
+
+declare interface BambuPrinter {
+	on(event: "connect", listener: () => void): this;
+	on(event: "disconnect", listener: () => void): this;
+	on(event: "update", listener: (state: PrinterState) => void): this;
+}
+
+export default BambuPrinter;
 
 interface SetLedOptions {
 	mode: "on" | "off" | "flashing";
