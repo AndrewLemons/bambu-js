@@ -1,7 +1,8 @@
 /**
  * Raw state returned by the printer.
  */
-export default interface BambuState {
+export interface RawPrinterState {
+	timestamp: number; // Field not provided by printer
 	upload?: {
 		status?: string;
 		progress?: number;
@@ -52,6 +53,8 @@ export default interface BambuState {
 	total_layer_num?: number;
 	s_obj?: [];
 	fan_gear?: number;
+	nozzle_diameter?: string;
+	nozzle_type?: string;
 	hms?: Array<{
 		attr: number;
 		code: number;
@@ -97,6 +100,7 @@ export default interface BambuState {
 		ipcam_dev?: string;
 		ipcam_record?: string;
 		timelapse?: string;
+		resolution?: string;
 		mode_bits?: number;
 	};
 	xcam?: { printing_monitor?: boolean; halt_print_sensitivity?: string };
@@ -122,7 +126,7 @@ export default interface BambuState {
 		k?: number;
 		n?: number;
 	};
-	lights_report?: Array<{ node?: string; mode?: string }>;
+	lights_report?: Array<{ node: string; mode: string }>;
 	upgrade_state?: {
 		sequence_id?: number;
 		progress?: string;
