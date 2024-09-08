@@ -1,6 +1,6 @@
 export enum PrintStage {
-	UNKNOWN = 0,
-	IDLE = 1,
-	PRINTING = 2,
-	PAUSED = 3,
+	UNKNOWN = "UNKNOWN",
+	IDLE = "IDLE",
+	PRINTING = "PRINTING",
+	PAUSED = "PAUSED",
 }
