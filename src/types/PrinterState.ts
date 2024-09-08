@@ -19,7 +19,7 @@ export interface PrinterState {
 		/**
 		 * Target temperature of the nozzle.
 		 */
-		target_temperature: number;
+		targetTemperature: number;
 		/**
 		 * Diameter of the nozzle.
 		 */
@@ -40,7 +40,7 @@ export interface PrinterState {
 		/**
 		 * Target temperature of the bed.
 		 */
-		target_temperature: number;
+		targetTemperature: number;
 	};
 	/**
 	 * Information about the IP camera in the printer.

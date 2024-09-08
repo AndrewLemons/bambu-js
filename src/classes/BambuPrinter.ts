@@ -211,8 +211,6 @@ declare interface BambuPrinter {
 	on(event: "update", listener: (state: PrinterState) => void): this;
 }
 
-export default BambuPrinter;
-
 interface SetLedOptions {
 	mode: "on" | "off" | "flashing";
 	onTime?: number;
@@ -229,3 +227,5 @@ interface PrintProjectFileOptions {
 	bedLeveling?: boolean;
 	bedType?: string;
 }
+
+export default BambuPrinter;
