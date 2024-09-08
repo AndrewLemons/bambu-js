@@ -12,13 +12,13 @@ export default function convertState(rawState: RawPrinterState): PrinterState {
 		timestamp: rawState.timestamp,
 		nozzle: {
 			temperature: rawState.nozzle_temper,
-			target_temperature: rawState.nozzle_target_temper,
+			targetTemperature: rawState.nozzle_target_temper,
 			diameter: parseFloat(rawState.nozzle_diameter),
 			type: rawState.nozzle_type,
 		},
 		bed: {
 			temperature: rawState.bed_temper,
-			target_temperature: rawState.bed_target_temper,
+			targetTemperature: rawState.bed_target_temper,
 		},
 		camera: {
 			record: rawState.ipcam.ipcam_record === "enable",
