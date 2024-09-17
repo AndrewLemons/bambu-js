@@ -17,6 +17,7 @@ class BambuPrinter extends EventEmitter {
 	serial: string;
 	accessCode: string;
 	state: RawPrinterState;
+	hasInitialUpdate: boolean;
 
 	mqtt: BambuMQTT;
 
@@ -29,6 +30,7 @@ class BambuPrinter extends EventEmitter {
 		this.state = {
 			timestamp: Date.now(),
 		};
+		this.hasInitialUpdate = false;
 
 		this.mqtt = new BambuMQTT(host, accessCode, serial);
 	}
@@ -71,6 +73,32 @@ class BambuPrinter extends EventEmitter {
 	 */
 	getState(): PrinterState {
 		return convertState(this.state);
+	}
+
+	/**
+	 * Await the printer to send its initial state.
+	 * @param timeout - The maximum time to wait for the initial state.
+	 * @returns The initial state of the printer.
+	 */
+	async awaitInitialState(timeout: number = 30000): Promise<PrinterState> {
+		return new Promise((resolve, reject) => {
+			// Timeout if the initial state is not received
+			let timeoutId = setTimeout(() => {
+				reject(new Error("Timed out waiting for initial state"));
+			}, timeout);
+
+			// Resolve when the initial state is received
+			this.once("update", (state) => {
+				clearTimeout(timeoutId);
+				resolve(state);
+			});
+
+			// If the initial state has already been received, resolve immediately
+			if (this.hasInitialUpdate) {
+				clearTimeout(timeoutId);
+				resolve(this.getState());
+			}
+		});
 	}
 
 	/**
