@@ -3,4 +3,5 @@ export enum PrintStage {
 	IDLE = "IDLE",
 	PRINTING = "PRINTING",
 	PAUSED = "PAUSED",
+	FINISHED = "FINISHED",
 }
