@@ -21,9 +21,9 @@ export default function convertState(rawState: RawPrinterState): PrinterState {
 			targetTemperature: rawState.bed_target_temper,
 		},
 		camera: {
-			record: rawState.ipcam.ipcam_record === "enable",
-			timelapse: rawState.ipcam.timelapse === "enable",
-			resolution: rawState.ipcam.resolution,
+			record: rawState.ipcam?.ipcam_record === "enable",
+			timelapse: rawState.ipcam?.timelapse === "enable",
+			resolution: rawState.ipcam?.resolution ?? "unknown",
 		},
 		chamber: {
 			temperature: rawState.chamber_temper,

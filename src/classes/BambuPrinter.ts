@@ -229,6 +229,7 @@ class BambuPrinter extends EventEmitter {
 	private async onStateUpdate(state: RawPrinterState) {
 		// Merge the new state with the old state
 		this.state = { ...this.state, ...state, timestamp: Date.now() };
+		this.hasInitialUpdate = true;
 		this.emit("update", this.getState());
 	}
 }
