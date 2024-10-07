@@ -1,6 +1,6 @@
 import type { PrinterState } from "../types/PrinterState";
 import type { RawPrinterState } from "../types/RawPrinterState";
-import { PrintStage } from "../types/PrintStage";
+import { PrintStage, printStageValues } from "../types/PrintStage";
 
 /**
  * Convert raw state to printer state.
@@ -30,7 +30,8 @@ export default function convertState(rawState: RawPrinterState): PrinterState {
 		},
 		controller: {
 			printName: rawState.subtask_name,
-			printStage: PrintStage[rawState.mc_print_stage] ?? PrintStage.UNKNOWN,
+			printStage:
+				printStageValues[rawState.mc_print_stage] ?? PrintStage.UNKNOWN,
 			printSubStage: rawState.mc_print_sub_stage,
 			printLineNumber: parseInt(rawState.mc_print_line_number),
 			printPercent: rawState.mc_percent,
