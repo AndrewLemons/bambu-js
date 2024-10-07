@@ -43,6 +43,7 @@ class BambuPrinter extends EventEmitter {
 		this.mqtt.on("update", this.onStateUpdate.bind(this));
 		this.mqtt.on("disconnect", () => this.emit("disconnect"));
 		this.mqtt.on("connect", () => this.emit("connect"));
+		this.mqtt.on("error", (error) => this.emit("error", error));
 	}
 
 	/**
@@ -238,6 +239,7 @@ declare interface BambuPrinter {
 	on(event: "connect", listener: () => void): this;
 	on(event: "disconnect", listener: () => void): this;
 	on(event: "update", listener: (state: PrinterState) => void): this;
+	on(event: "error", listener: (error: Error) => void): this;
 }
 
 interface SetLedOptions {

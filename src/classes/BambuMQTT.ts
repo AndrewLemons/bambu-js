@@ -46,8 +46,13 @@ export default class BambuMQTT extends EventEmitter {
 		this.client.on("connect", this.onConnect.bind(this));
 		this.client.on("close", this.onClose.bind(this));
 		this.client.on("message", this.onMessage.bind(this));
-		this.client.on("error", (error) => {
-			this.disconnect();
+		this.client.on("error", async (error) => {
+			this.emit("error", new Error("Client error"));
+			await this.disconnect();
+		});
+		this.client.stream.on("error", async (error) => {
+			this.emit("error", new Error("Stream error"));
+			await this.disconnect();
 		});
 	}
 
@@ -55,8 +60,9 @@ export default class BambuMQTT extends EventEmitter {
 	 * Disconnect from the printer.
 	 */
 	async disconnect() {
+		this.client.end()
+		this.client.emit("close");
 		this.client.removeAllListeners();
-		this.client.end();
 		this.emit("disconnect");
 	}
 
