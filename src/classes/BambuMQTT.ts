@@ -60,7 +60,7 @@ export default class BambuMQTT extends EventEmitter {
 	 * Disconnect from the printer.
 	 */
 	async disconnect() {
-		this.client.end()
+		this.client.end();
 		this.client.emit("close");
 		this.client.removeAllListeners();
 		this.emit("disconnect");
