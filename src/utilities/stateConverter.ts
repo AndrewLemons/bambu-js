@@ -29,7 +29,7 @@ export default function convertState(rawState: RawPrinterState): PrinterState {
 			temperature: rawState.chamber_temper,
 		},
 		controller: {
-			printName: rawState.subtask_name,
+			printName: rawState.gcode_file,
 			printStage:
 				printStageValues[rawState.mc_print_stage] ?? PrintStage.UNKNOWN,
 			printSubStage: rawState.mc_print_sub_stage,
