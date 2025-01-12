@@ -9,6 +9,7 @@ import type { PrinterState } from "../types/PrinterState";
 /**
  * A class for interfacing with a Bambu Lab printer.
  * @emits update - Emitted when the printer's state is updated.
+ * @emits result - Emitted when the printer responds to a command.
  * @emits connect - Emitted when the printer is connected.
  * @emits disconnect - Emitted when the printer is disconnected.
  */
@@ -41,6 +42,7 @@ class BambuPrinter extends EventEmitter {
 	async connect() {
 		await this.mqtt.connect();
 		this.mqtt.on("update", this.onStateUpdate.bind(this));
+		this.mqtt.on("result", (result) => this.emit("result", result));
 		this.mqtt.on("disconnect", () => this.emit("disconnect"));
 		this.mqtt.on("connect", () => this.emit("connect"));
 		this.mqtt.on("error", (error) => this.emit("error", error));
@@ -148,6 +150,21 @@ class BambuPrinter extends EventEmitter {
 	}
 
 	/**
+	 * Send gcode
+	 */
+	sendGcode(gcode: string) {
+		let data = {
+			print: {
+				sequence_id: "0",
+				command: "gcode_line",
+				param: gcode
+			},
+		};
+
+		this.mqtt.sendRequest(data);
+	}
+
+	/**
 	 * Set the state of the printer's LED.
 	 * @param options - Options for setting the LED state.
 	 */
@@ -239,6 +256,7 @@ declare interface BambuPrinter {
 	on(event: "connect", listener: () => void): this;
 	on(event: "disconnect", listener: () => void): this;
 	on(event: "update", listener: (state: PrinterState) => void): this;
+	on(event: "result", listener: (result: String) => void): this;
 	on(event: "error", listener: (error: Error) => void): this;
 }
 

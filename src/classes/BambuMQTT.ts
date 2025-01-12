@@ -6,6 +6,7 @@ const MQTT_USERNAME = "bblp";
 /**
  * A class for interfacing with a Bambu Lab printers over MQTT.
  * @emits update - Emitted when the printer's state is updated.
+ * @emits result - Emitted when the printer responds to a command.
  * @emits connect - Emitted when the printer is connected.
  * @emits disconnect - Emitted when the printer is disconnected.
  */
@@ -104,7 +105,7 @@ export default class BambuMQTT extends EventEmitter {
 	 */
 	private onMessage(topic: string, message: Buffer) {
 		const payload = JSON.parse(message.toString());
-
+		
 		if (topic === `device/${this.serial}/report`) {
 			if (payload.print) {
 				if (payload.print.command === "push_status") {
@@ -117,6 +118,11 @@ export default class BambuMQTT extends EventEmitter {
 					};
 					// Emit the update event
 					this.emit("update", state);
+				}
+				if (payload.print.command === "gcode_line") {
+					let result = payload.print.result;
+					// Emit the result event
+					this.emit("result", result);
 				}
 			}
 		}
