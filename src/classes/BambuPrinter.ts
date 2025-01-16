@@ -157,7 +157,7 @@ class BambuPrinter extends EventEmitter {
 			print: {
 				sequence_id: "0",
 				command: "gcode_line",
-				param: gcode
+				param: gcode + "\n",
 			},
 		};
 
