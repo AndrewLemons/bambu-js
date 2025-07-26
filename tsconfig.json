@@ -1,14 +1,26 @@
 {
 	"compilerOptions": {
-		"module": "commonjs",
+		/* Base Options */
 		"esModuleInterop": true,
-		"target": "es6",
-		"moduleResolution": "node",
+		"skipLibCheck": true,
+		"target": "es2022",
+		"allowJs": true,
+		"resolveJsonModule": true,
+		"moduleDetection": "force",
+		"isolatedModules": true,
+		"verbatimModuleSyntax": true,
+
+		/* Strictness */
+		"strict": true,
+		"noUncheckedIndexedAccess": true,
+		"noImplicitOverride": true,
+
+		/* Transpiling */
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"outDir": "dist",
 		"sourceMap": true,
 		"declaration": true,
-		"declarationDir": "./dist/",
-		"outDir": "./dist/",
-		"rootDir": "./src/"
-	},
-	"lib": ["es2015"]
+		"lib": ["es2022"]
+	}
 }
