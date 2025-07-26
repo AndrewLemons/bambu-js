@@ -1,0 +1,58 @@
+name: PR Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.7.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check formatting
+        run: |
+          echo "🔍 Checking code formatting..."
+          if npx prettier --check .; then
+            echo "✅ All files are properly formatted"
+          else
+            echo "❌ Code formatting issues found!"
+            echo "Please run 'pnpm run format' to fix formatting issues and commit the changes."
+            exit 1
+          fi
+
+      - name: Check version bump
+        id: version-check
+        uses: EndBug/version-check@v2
+        with:
+          diff-search: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate version change
+        run: |
+          if [ "${{ steps.version-check.outputs.changed }}" = "true" ]; then
+            echo "✅ Version has been bumped to ${{ steps.version-check.outputs.version }} (${{ steps.version-check.outputs.type }} release)"
+          else
+            echo "❌ Version has not been bumped!"
+            echo "Please update the version in package.json using:"
+            echo "  npm version patch  # for bug fixes"
+            echo "  npm version minor  # for new features"
+            echo "  npm version major  # for breaking changes"
+            exit 1
+          fi
