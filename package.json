@@ -1,14 +1,22 @@
 {
 	"name": "bambu-js",
-	"version": "2.2.2",
-	"description": "Tools to interact with Bambu Lab printers over MQTT and FTP.",
+	"version": "3.0.0",
+	"description": "Tools to interact with Bambu Lab printers",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.js"
+		}
+	},
+	"type": "module",
 	"keywords": [
 		"bambu",
 		"printer",
 		"mqtt",
-		"ftp"
+		"ftp",
+		"camera"
 	],
 	"author": {
 		"name": "Andrew Lemons",
@@ -21,13 +29,14 @@
 	},
 	"dependencies": {
 		"basic-ftp": "^5.0.5",
-		"mqtt": "^5.10.1"
+		"mqtt": "^5.13.3"
 	},
 	"devDependencies": {
-		"@types/node": "^20.16.2",
-		"prettier": "^3.3.3",
-		"ts-node": "^10.9.2",
-		"typescript": "^5.5.4"
+		"@types/node": "^24.1.0",
+		"dotenv": "^17.2.1",
+		"prettier": "^3.6.2",
+		"tsx": "^4.20.3",
+		"typescript": "^5.8.3"
 	},
-	"packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a"
+	"packageManager": "pnpm@9.7.0"
 }

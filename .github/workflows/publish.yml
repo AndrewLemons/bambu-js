@@ -1,0 +1,49 @@
+name: Publish to NPM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.7.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check if version exists on NPM
+        id: version-check
+        uses: EndBug/version-check@v2
+        with:
+          file-url: https://unpkg.com/bambu-js@latest/package.json
+          static-checking: localIsNew
+
+      - name: Build package
+        if: steps.version-check.outputs.changed == 'true'
+        run: pnpm run build
+
+      - name: Publish to NPM
+        if: steps.version-check.outputs.changed == 'true'
+        run: pnpm publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+      - name: Skip publishing
+        if: steps.version-check.outputs.changed == 'false'
+        run: echo "⏭️ No version change detected, skipping publish (version ${{ steps.version-check.outputs.version }})"
