@@ -1,6 +1,6 @@
 {
 	"name": "bambu-js",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"description": "Tools to interact with Bambu Lab printers",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
