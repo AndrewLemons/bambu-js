@@ -1,4 +1,17 @@
 /**
+ * Generates the command for requesting the printer's firmware information.
+ * @return The command payload to send to the printer.
+ */
+export function getVersionCommand() {
+	return {
+		info: {
+			sequence_id: "0",
+			command: "get_version",
+		},
+	};
+}
+
+/**
  * Generates the command for requesting the printer's current state.
  * @return The command payload to send to the printer.
  */

@@ -1,6 +1,6 @@
 {
 	"name": "bambu-js",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"description": "Tools to interact with Bambu Lab printers",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -24,12 +24,13 @@
 	},
 	"license": "MIT",
 	"scripts": {
-		"build": "tsc -p .",
+		"build": "tsc -p . && tsc-alias",
 		"format": "prettier --write ."
 	},
 	"dependencies": {
 		"basic-ftp": "^5.0.5",
-		"mqtt": "^5.13.3"
+		"mqtt": "^5.13.3",
+		"tsc-alias": "^1.8.16"
 	},
 	"devDependencies": {
 		"@types/node": "^24.1.0",

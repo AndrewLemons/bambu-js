@@ -22,5 +22,9 @@
 		"sourceMap": true,
 		"declaration": true,
 		"lib": ["es2022"]
+	},
+	"tsc-alias": {
+		"resolveFullPaths": true,
+		"resolveFullExtension": ".js"
 	}
 }
